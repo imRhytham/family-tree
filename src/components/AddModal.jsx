@@ -26,12 +26,13 @@ const AddModal = ({ open, setOpen }) => {
 	};
 
 	const handleSave = () => {
-		if (!data?.id || data?.id === '') {
+		if (!data.id) {
 			setData({ ...data, id: uuidv4() });
 			setFamilyData(data);
 		}
 		setOpen(false);
 	};
+	console.log(data);
 
 	return (
 		<div>
@@ -81,7 +82,7 @@ const AddModal = ({ open, setOpen }) => {
 								variant='standard'
 							/>
 						</Grid>
-						<Grid item xs={12}>
+						<Grid item xs={4}>
 							<TextField
 								autoFocus
 								margin='dense'
@@ -91,6 +92,19 @@ const AddModal = ({ open, setOpen }) => {
 								value={data.age}
 								onChange={(e) => setData({ ...data, age: e.target.value })}
 								variant='standard'
+							/>
+						</Grid>
+						<Grid item xs={8}>
+							<TextField
+								autoFocus
+								margin='dense'
+								id='address'
+								label='Address'
+								type='text'
+								value={data.address}
+								onChange={(e) => setData({ ...data, address: e.target.value })}
+								variant='standard'
+								fullWidth
 							/>
 						</Grid>
 					</Grid>

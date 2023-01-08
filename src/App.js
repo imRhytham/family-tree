@@ -1,5 +1,5 @@
-import { Box, Stack } from '@mui/material';
 import React from 'react';
+import { Box, Stack } from '@mui/material';
 import FamilyDetails from './components/FamilyDetails';
 import FamilyTree from './components/FamilyTree';
 import Toolbar from './components/Toolbar';

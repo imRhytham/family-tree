@@ -5,33 +5,25 @@ const AppContext = createContext();
 const AppContextProvider = ({ children }) => {
 	const [familyData, setFamilyData] = useState(null);
 	const [data, setData] = useState({
-		id: '',
+		id: null,
 		name: '',
 		familyName: '',
 		age: '',
 		spouseName: '',
+		address: '',
 		children: [],
 	});
-	const [isEdit, setIsEdit] = useState(false);
-	const [isAdd, setIsAdd] = useState(false);
-	const [isDelete, setIsDelete] = useState(false);
-	const [isView, setIsView] = useState(false);
+	const [selectedMember, setSelectedMember] = useState(null);
 
 	return (
 		<AppContext.Provider
 			value={{
 				familyData,
 				setFamilyData,
-				isEdit,
-				setIsEdit,
-				isAdd,
-				setIsAdd,
-				isDelete,
-				setIsDelete,
-				isView,
-				setIsView,
 				data,
 				setData,
+				selectedMember,
+				setSelectedMember,
 			}}
 		>
 			{children}
