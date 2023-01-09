@@ -1,14 +1,27 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, Grid } from '@mui/material';
 import AddModal from './AddModal';
+import ImportExportModal from './ImportExportModal';
+import { AppContext } from '../context/AppContext';
 
 const Toolbar = () => {
 	const [open, setOpen] = useState(false);
+	const [openImportExport, setOpenImportExport] = useState(false);
+	const [title, setTitle] = useState('');
+	const { familyData } = useContext(AppContext);
 	return (
 		<>
 			<Grid container rowSpacing={1} columnSpacing={{ xs: 1 }}>
 				<Grid item xs={6}>
-					<Button variant='contained'>Import Json</Button>
+					<Button
+						variant='contained'
+						onClick={() => {
+							setTitle('Import Json');
+							setOpenImportExport(true);
+						}}
+					>
+						Import Json
+					</Button>
 				</Grid>
 				<Grid item xs={6}>
 					<Button variant='contained' onClick={() => setOpen(true)}>
@@ -16,13 +29,31 @@ const Toolbar = () => {
 					</Button>
 				</Grid>
 				<Grid item xs={6}>
-					<Button variant='contained'>Export Json</Button>
+					<Button
+						variant='contained'
+						onClick={() => {
+							setTitle('Export Json');
+							setOpenImportExport(true);
+						}}
+						disabled={!familyData}
+					>
+						Export Json
+					</Button>
 				</Grid>
 				<Grid item xs={6}>
-					<Button variant='contained'>Print Family Tree</Button>
+					<Button variant='contained' disabled={!familyData}>
+						Print Family Tree
+					</Button>
 				</Grid>
 			</Grid>
-			<AddModal open={open} setOpen={setOpen} />
+			{open && <AddModal open={open} setOpen={setOpen} />}
+			{openImportExport && (
+				<ImportExportModal
+					open={openImportExport}
+					setOpen={setOpenImportExport}
+					title={title}
+				/>
+			)}
 		</>
 	);
 };

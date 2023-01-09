@@ -10,14 +10,16 @@ import {
 } from '@mui/material';
 import { AppContext } from '../context/AppContext';
 import { v4 as uuidv4 } from 'uuid';
+import { findObject } from '../config/Helper';
 
 const AddModal = ({ open, setOpen }) => {
-	const { data, setData, setFamilyData } = useContext(AppContext);
+	const { data, setData, setFamilyData, selectedMember, familyData } =
+		useContext(AppContext);
 
 	const handleClose = () => {
 		setOpen(false);
 		setData({
-			id: '',
+			id: null,
 			name: '',
 			familyName: '',
 			spouseName: '',
@@ -26,13 +28,62 @@ const AddModal = ({ open, setOpen }) => {
 	};
 
 	const handleSave = () => {
-		if (!data.id) {
-			setData({ ...data, id: uuidv4() });
-			setFamilyData(data);
+		const body = {
+			id: uuidv4(),
+			name: data.name,
+			familyName: data.familyName,
+			spouseName: data.spouseName,
+			age: data.age,
+			children: [],
+		};
+		if (!familyData) {
+			setFamilyData(body);
 		}
+		if (familyData?.children.length === 0) {
+			const child = familyData.children.concat(body);
+			setFamilyData({ ...familyData, children: child });
+			// setFamilyData({familyData});
+		}
+		if (familyData?.children.length > 0) {
+			if (selectedMember === familyData.id) {
+				const child = familyData.children.push(body);
+				setFamilyData({ ...familyData, children: child });
+				setOpen(false);
+				setData({
+					id: null,
+					name: '',
+					familyName: '',
+					spouseName: '',
+					age: '',
+				});
+			}
+			const obj = findObject(familyData.children, selectedMember.id);
+			console.log(obj);
+			if (obj) {
+				if (obj.children.length > 0) {
+					obj.children.push(body);
+				}
+				if (obj.children.length === 0) {
+					obj.children = [body];
+				}
+				//const child = obj.children.concat(data);
+				//console.log(child);
+				//setFamilyData({ ...familyData, children: obj });
+				// setFamilyData(familyData);
+			}
+		}
+		console.log(familyData);
+
 		setOpen(false);
+		setData({
+			id: null,
+			name: '',
+			familyName: '',
+			spouseName: '',
+			age: '',
+		});
 	};
-	console.log(data);
+	// console.log(data);
 
 	return (
 		<div>
